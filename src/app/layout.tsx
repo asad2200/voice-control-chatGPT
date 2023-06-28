@@ -1,9 +1,12 @@
-import SideBar from '@/components/SideBar'
-import './globals.css'
 import { Inter } from 'next/font/google'
-import SessionProvider from '@/components/SessionProvider'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]/route'
+
+import SideBar from '@/components/SideBar'
+import SessionProvider from '@/components/SessionProvider'
+import Login from '@/components/Login'
+
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,17 +27,21 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider session={session}>
-          <div className='flex'>
-            <div className='max-w-xs h-screen overflow-y-auto md:min-w-[20rem]'>
-              <SideBar />
-            </div>
+          {!session ? (
+            <Login />
+          ): (
+            <div className='flex'>
+              <div className='max-w-xs h-screen overflow-y-auto md:min-w-[20rem]'>
+                <SideBar />
+              </div>
 
-            {/* ClientProvider - Notification */}
+              {/* ClientProvider - Notification */}
 
-            <div className='flex-1'>
-              {children}
+              <div className='flex-1'>
+                {children}
+              </div>
             </div>
-          </div>
+          )}
         </SessionProvider>
       </body>
     </html>
