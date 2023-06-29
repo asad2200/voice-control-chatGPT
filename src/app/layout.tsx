@@ -7,6 +7,7 @@ import SessionProvider from '@/components/SessionProvider'
 import Login from '@/components/Login'
 
 import './globals.css'
+import ClientProvider from '@/components/ClientProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,6 +37,7 @@ export default async function RootLayout({
               </div>
 
               {/* ClientProvider - Notification */}
+              <ClientProvider />
 
               <div className='flex-1'>
                 {children}

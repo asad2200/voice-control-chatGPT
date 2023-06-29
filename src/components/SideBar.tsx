@@ -7,6 +7,8 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import NewChat from "./NewChat"
 import { db } from "../../firebase";
 import ChatRow from "./ChatRow";
+import ModelSelection from "./ModelSelection"
+import useSWR from "swr"
 
 function SideBar() {
     const { data: session } = useSession()
@@ -14,8 +16,12 @@ function SideBar() {
     const [chats, loading, error] = useCollection(
         session && query(
         collection(db, 'users', session?.user?.email!, 'chats'),
-        orderBy('createdAt', 'asc')
+        orderBy('createdAt', 'desc')
     ));
+
+    const { data: model } = useSWR("model", {
+        fallbackData: 'text-davici-003'
+    })
 
     return (
         <div className="p-2 flex flex-col h-screen bg-gray-500/20">
@@ -23,13 +29,23 @@ function SideBar() {
                 <div>
                     <NewChat />
                     
-                    <div>
-                        {/* ModelSelection */}
+                    <div className="hidden md:inline">
+                        <ModelSelection />
                     </div>
 
-                    {chats?.docs.map((chat) => (
-                        <ChatRow key={chat.id} id={chat.id} />
-                    ) )}
+                    <div className="flex flex-col space-y-2 my-2">
+
+                        {loading && (
+                            <div className="animate-pulse text-center text-white">
+                                <p>Loading Chats...</p>
+                            </div>
+                        )}
+
+                        {chats?.docs.map((chat) => (
+                            <ChatRow key={chat.id} id={chat.id} />
+                        ))}
+                    </div>
+                    
                 </div>
             </div>
 
@@ -37,7 +53,7 @@ function SideBar() {
                 <img 
                     onClick={() => {signOut()}}
                     src={session.user?.image!}
-                    className="h-16 w-16 p-2 border border-gray-100/50 rounded-full mx-auto mb-2 
+                    className="h-12 w-12 p-2 rounded-full mx-auto mb-2 
                     cursor-pointer hover:opacity-50"
                 />
             )}

@@ -20,7 +20,7 @@ function ChatRow({id}: Props) {
     const [active, setActive] = useState(false)
 
     const [messages] = useCollection(
-        collection(db, 'users', session?.user?.email!, 'chats', id, 'message')
+        collection(db, 'users', session?.user?.email!, 'chats', id, 'messages')
     )
 
     useEffect(() => {
