@@ -24,7 +24,7 @@ export async function POST(request: Request) {
         user: {
             _id: "ChatGPT",
             name: "ChatGPT",
-            avatar: "https://links.papareact.com/89k"
+            avatar: "/ChatGPT-LOGO.png"
         }
     }
 
