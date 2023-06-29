@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google'
 import { getServerSession } from 'next-auth'
-import { authOptions } from './api/auth/[...nextauth]/route'
+import { authOptions } from './api/auth/[...nextauth]/authOptions'
 
 import SideBar from '@/components/SideBar'
 import SessionProvider from '@/components/SessionProvider'
