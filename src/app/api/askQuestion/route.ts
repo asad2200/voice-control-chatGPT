@@ -2,6 +2,7 @@ import query from '@/lib/queryApi'
 import { NextResponse } from 'next/server'
 import admin from 'firebase-admin'
 import { adminDb } from '../../../../firebaseAdmin'
+import { Message } from '../../../../typings'
 
 export async function POST(request: Request) {
     

@@ -8,6 +8,7 @@ import { db } from "../../firebase"
 import { toast } from "react-hot-toast"
 import ModelSelection from "./ModelSelection"
 import useSWR from "swr"
+import { Message } from '../../typings'
 
 type Props = {
     chatId: string

@@ -1,6 +1,6 @@
 import admin from 'firebase-admin'
 
-interface Message {
+export interface Message {
     text: string
     createdAt: admin.firestore.Timestamp
     user: {
