@@ -20,7 +20,7 @@ function ChatInput({ chatId } : Props) {
     const { data: session } = useSession()
 
     const { data: model } = useSWR("model", {
-        fallbackData: 'text-davici-003'
+        fallbackData: 'text-davinci-003'
     })
 
     const sendMessage = async (e: FormEvent <HTMLFormElement>) => {

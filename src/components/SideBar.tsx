@@ -20,7 +20,7 @@ function SideBar() {
     ));
 
     const { data: model } = useSWR("model", {
-        fallbackData: 'text-davici-003'
+        fallbackData: 'text-davinci-003'
     })
 
     return (
