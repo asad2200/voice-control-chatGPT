@@ -88,7 +88,7 @@ function ChatInput({ chatId } : Props) {
             <form onSubmit={sendMessage} className="p-5 space-x-5 flex">
                 <div className="flex-1">
                     <input 
-                        className="bg-transparent focus: outline-none flex-1
+                        className="bg-transparent focus: outline-none w-full
                             disabled:cursor-not-allowed disabled:text-gray-300
                         "
                         disabled={!session}
