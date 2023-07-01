@@ -9,6 +9,8 @@ import { toast } from "react-hot-toast"
 import ModelSelection from "./ModelSelection"
 import useSWR from "swr"
 import { Message } from '../../typings'
+import { MicrophoneIcon, StopIcon } from "@heroicons/react/24/solid"
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
 type Props = {
     chatId: string
@@ -61,32 +63,73 @@ function ChatInput({ chatId } : Props) {
             toast.success('ChatGPT has responded!',{
                 id: notification,
             })
-
         })
+    }
+
+    const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition()
+    const startListening = () => {
+        resetTranscript()
+        toast('Listening is enabled(Start Speaking)...')
+        SpeechRecognition.startListening({ continuous: true, language: "en-IN" })
+    }
+
+    const stopListening = () => {
+        toast.success('Listening is Completed!')
+        setPrompt(transcript)
+        SpeechRecognition.stopListening()
+    }
+
+    if (!browserSupportsSpeechRecognition) {
+        return null
     }
 
     return (
         <div className="bg-gray-700/50 text-gray-400 rounded-lg text-sm">
             <form onSubmit={sendMessage} className="p-5 space-x-5 flex">
-                <input 
-                    className="bg-transparent focus: outline-none flex-1
-                        disabled:cursor-not-allowed disabled:text-gray-300
-                    "
-                    disabled={!session}
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    type='text' 
-                    placeholder="Type your message here..."
-                />
-                <button 
-                    type="submit"
-                    disabled={! prompt || !session}
-                    className="bg-[#11A37F] hover:opacity-50 tex-white font-bold px-4 py-2 rounded 
-                        disabled:cursor-not-allowed disabled:bg-gray-300
-                    "
-                >
-                    <PaperAirplaneIcon className="h-4 w-4 -rotate-45 "/>
-                </button>
+                <div className="flex-1">
+                    <input 
+                        className="bg-transparent focus: outline-none flex-1
+                            disabled:cursor-not-allowed disabled:text-gray-300
+                        "
+                        disabled={!session}
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        type='text' 
+                        placeholder="Type your message here..."
+                    />
+                    { listening && (
+                        <p>{transcript}</p>
+                    )}
+                </div>
+                <div className="flex space-x-2 items-center justify-end">
+                    <button 
+                        type="submit"
+                        disabled={!prompt || !session}
+                        className="bg-[#11A37F] hover:opacity-50 text-white font-bold px-4 py-2 rounded 
+                            disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-black
+                        "
+                    >
+                        <PaperAirplaneIcon className="h-4 w-4 -rotate-45 "/>
+                    </button>
+                    <button
+                        onClick={startListening}
+                        disabled={!session || listening}
+                        className="bg-[#11A37F] hover:opacity-50 text-white font-bold px-4 py-2 rounded 
+                            disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-black
+                        "
+                    >
+                        <MicrophoneIcon className="h-4 w-4"/>
+                    </button>
+                    <button
+                        onClick={stopListening}
+                        disabled={!session || !listening}
+                        className="bg-[#11A37F] hover:opacity-50 text-white font-bold px-4 py-2 rounded 
+                            disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-black
+                        "
+                    >
+                        <StopIcon className="h-4 w-4"/>
+                    </button>
+                </div>
             </form>
 
             <div className="md:hidden">
